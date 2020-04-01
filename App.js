@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -23,8 +23,11 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {BleManager} from 'react-native-ble-plx';
 
 const App = () => {
+  const manager = new BleManager();
+  const variable = manager.devices(['asd', 'nice', 'dab']);
   return (
     <Fragment>
       <StatusBar barStyle="dark-content" />
@@ -44,6 +47,7 @@ const App = () => {
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.js</Text> to change this
                 screen and then come back to see your edits.
+                {JSON.stringify(variable)}
               </Text>
             </View>
             <View style={styles.sectionContainer}>
