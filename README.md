@@ -16,3 +16,6 @@ var sharedBlacklist = [
 ];
 
 
+There might also be a key issue, then you do this in side \android\app 
+-> keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
+
