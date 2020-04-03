@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, {Fragment} from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,9 @@ import {
   View,
   Text,
   StatusBar,
+  PermissionsAndroid,
+  Alert,
+  Button
 } from 'react-native';
 
 import {
@@ -23,54 +26,79 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {BleManager} from 'react-native-ble-plx';
+import { BleManager } from 'react-native-ble-plx';
+
+
+const requestLocationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: "Cool Photo App Location Permission",
+        message:
+          "We need your location" +
+          "So we can find your dog",
+        buttonNeutral: "Ask Me Later",
+        buttonNegative: "Cancel",
+        buttonPositive: "OK"
+      }
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("Now we have you data/dog");
+    } else {
+      console.log("Apple failed to steal your data");
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
 
 const App = () => {
-  const manager = new BleManager();
-  const variable = manager.devices(['asd', 'nice', 'dab']);
+  const [devices, setDevices] = useState([]);
+
+
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    async function blueTooth() {
+      const manager = new BleManager();
+      manager.startDeviceScan(null, null, (error, device) => {
+        if (error) {
+          console.log(error);
+        }
+        else {
+          //console.warn("dev", devices);
+          const devAlreadyExist = devices.find(d => d.id === device.id);
+          if (!devAlreadyExist)
+            setDevices([...devices, device]);
+          console.log(device.id);
+        }
+      })
+    }
+    // Execute the created function directly
+    blueTooth();
+  }, []);
+
+
   return (
     <Fragment>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-                {JSON.stringify(variable)}
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
+        <View style={styles.container}>
+          <Button title="Request Location permission" onPress={requestLocationPermission} />
+        </View>
+        <View>
+          <Text>Searching...</Text>
+          {devices.map(d => {
+            return (
+              <Fragment key={d.id}>
+                <Text>Name:{d.name}</Text>
+                <Text>Id:{d.id}</Text>
+              </Fragment>
+            )
+          })}
+        </View>
+
       </SafeAreaView>
     </Fragment>
   );
