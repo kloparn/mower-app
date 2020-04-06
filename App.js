@@ -53,30 +53,39 @@ const requestLocationPermission = async () => {
   }
 };
 
-
 const App = () => {
   const [devices, setDevices] = useState([]);
+  const manager = new BleManager();
 
+  const deviceScan = () => {
+    manager.startDeviceScan(null, null, (error, device) => {
+      if (error) {
+        console.log(error);
+      }
+      else {
+        //console.warn("dev", devices);
+        const devAlreadyExist = devices.find(d => d.id === device.id);
+        if (!devAlreadyExist)
+          setDevices([...devices, device]);
+        console.log(device.id);
+      }
+    })
+
+  }
+  const resetDeviceScan = () => {
+    setDevices([]);
+    deviceScan();
+  }
+  deviceScan();
 
   useEffect(() => {
     // Create an scoped async function in the hook
-    async function blueTooth() {
-      const manager = new BleManager();
-      manager.startDeviceScan(null, null, (error, device) => {
-        if (error) {
-          console.log(error);
-        }
-        else {
-          //console.warn("dev", devices);
-          const devAlreadyExist = devices.find(d => d.id === device.id);
-          if (!devAlreadyExist)
-            setDevices([...devices, device]);
-          console.log(device.id);
-        }
-      })
+    async function functionName() {
+
+
     }
     // Execute the created function directly
-    blueTooth();
+    functionName();
   }, []);
 
 
@@ -92,12 +101,13 @@ const App = () => {
           {devices.map(d => {
             return (
               <Fragment key={d.id}>
-                <Text>Name:{d.name}</Text>
+                <Text>Name:{(d.name === null) ? "null" : d.name}</Text>
                 <Text>Id:{d.id}</Text>
               </Fragment>
             )
           })}
         </View>
+        <Button title="Scan for devices" onPress={resetDeviceScan} />
 
       </SafeAreaView>
     </Fragment>
