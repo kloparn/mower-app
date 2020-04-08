@@ -8,6 +8,16 @@
 
 import React, {Fragment, useState, useEffect} from 'react';
 import styled from 'styled-components';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {
+  StoreProvider,
+  createStore,
+  useStoreState,
+  useStoreActions,
+} from 'easy-peasy';
+
+import model from './store/model';
+import {MainScreen} from './screens';
 
 import {
   SafeAreaView,
@@ -29,6 +39,10 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import {BleManager} from 'react-native-ble-plx';
+
+const store = createStore(model);
+
+const myIcon = <Icon name="bluetooth" size={30} color="#009" />;
 
 // Make sure to clean up the code, NO STUPID TEXT.
 const requestLocationPermission = async () => {
@@ -83,29 +97,33 @@ const App = () => {
   }, []);
 
   return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <View>
-          <Button
-            title="Request Location permission"
-            onPress={requestLocationPermission}
-          />
-        </View>
-        <MainView>
-          <MainText>Searching...</MainText>
-          {devices.map((d) => {
-            return (
-              <Fragment key={d.id}>
-                <MainText>Name:{d.name === null ? 'null' : d.name}</MainText>
-                <MainText>Id:{d.id}</MainText>
-              </Fragment>
-            );
-          })}
-        </MainView>
-        <Button title="Scan for devices" onPress={resetDeviceScan} />
-      </SafeAreaView>
-    </Fragment>
+    <StoreProvider store={store}>
+      <Fragment>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <View>
+            <Button
+              title="Request Location permission"
+              onPress={requestLocationPermission}
+            />
+            {myIcon}
+          </View>
+          <MainView>
+            <MainText>Searching...</MainText>
+            {devices.map((d) => {
+              return (
+                <Fragment key={d.id}>
+                  <MainText>Name:{d.name === null ? 'null' : d.name}</MainText>
+                  <MainText>Id:{d.id}</MainText>
+                </Fragment>
+              );
+            })}
+          </MainView>
+          <MainScreen />
+          <Button title="Scan for devices" onPress={resetDeviceScan} />
+        </SafeAreaView>
+      </Fragment>
+    </StoreProvider>
   );
 };
 
