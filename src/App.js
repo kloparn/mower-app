@@ -1,14 +1,10 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React, {Fragment, useState, useEffect} from 'react';
-import styled from 'styled-components';
+import 'react-native-gesture-handler';
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {Text, View} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 import {
   StoreProvider,
   createStore,
@@ -17,122 +13,37 @@ import {
 } from 'easy-peasy';
 
 import model from './store/model';
-import {MainScreen} from './screens';
+import {MainScreen, ControlScreen} from './screens';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  PermissionsAndroid,
-  Alert,
-  Button,
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {BleManager} from 'react-native-ble-plx';
+import {bluetooth} from './helpers/icons';
 
 const store = createStore(model);
 
-const myIcon = <Icon name="bluetooth" size={30} color="#009" />;
-
-// Make sure to clean up the code, NO STUPID TEXT.
-const requestLocationPermission = async () => {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Cool Photo App Location Permission',
-        message: 'We need your location' + 'So we can find your dog', // LIKE THIS BITCH
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('Now we have you data/dog');
-    } else {
-      console.log('Apple failed to steal your data');
-    }
-  } catch (err) {
-    console.warn(err);
-  }
-};
+const Tab = createBottomTabNavigator();
 
 const App = () => {
-  const [devices, setDevices] = useState([]);
-  const manager = new BleManager();
-
-  const deviceScan = () => {
-    manager.startDeviceScan(null, null, (error, device) => {
-      if (error) {
-        console.log(error);
-      } else {
-        //console.warn("dev", devices);
-        const devAlreadyExist = devices.find((d) => d.id === device.id);
-        if (!devAlreadyExist) setDevices([...devices, device]);
-        console.log(device.id);
-      }
-    });
-  };
-  const resetDeviceScan = () => {
-    setDevices([]);
-    deviceScan();
-  };
-  deviceScan();
-
-  useEffect(() => {
-    // Create an scoped async function in the hook
-    async function functionName() {}
-    // Execute the created function directly
-    functionName();
-  }, []);
-
   return (
     <StoreProvider store={store}>
-      <Fragment>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
-          <View>
-            <Button
-              title="Request Location permission"
-              onPress={requestLocationPermission}
-            />
-            {myIcon}
-          </View>
-          <MainView>
-            <MainText>Searching...</MainText>
-            {devices.map((d) => {
-              return (
-                <Fragment key={d.id}>
-                  <MainText>Name:{d.name === null ? 'null' : d.name}</MainText>
-                  <MainText>Id:{d.id}</MainText>
-                </Fragment>
-              );
-            })}
-          </MainView>
-          <MainScreen />
-          <Button title="Scan for devices" onPress={resetDeviceScan} />
-        </SafeAreaView>
-      </Fragment>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
+              switch (route.name) {
+                case 'Home':
+                  return <Icon name="home" size={size} color={color} />;
+                case 'Control':
+                  return <Icon name="bluetooth" size={size} color={color} />;
+                default:
+                  return <Icon name="question" size={size} color={color} />;
+              }
+            },
+          })}>
+          <Tab.Screen name="Control" component={ControlScreen} />
+          <Tab.Screen name="Home" component={MainScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
     </StoreProvider>
   );
 };
-
-// TEMP
-const MainView = styled.View`
-  background-color: black;
-`;
-const MainText = styled.Text`
-  color: white;
-`;
 
 export default App;
