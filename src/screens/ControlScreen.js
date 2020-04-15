@@ -15,6 +15,9 @@ import {
 
 import {BleManager} from 'react-native-ble-plx';
 
+const ROBOT_UID_CONNECT = '0000ffe1-0000-1000-8000-00805f9b34fb';
+const ROBOT_UID_SEND = '0000ffe3-0000-1000-8000-00805f9b34fb';
+
 const ControlScreen = () => {
   const [devices, setDevices] = useState([]);
   const manager = new BleManager();
@@ -23,10 +26,27 @@ const ControlScreen = () => {
       if (error) {
         console.log(error);
       } else {
-        //console.warn("dev", devices);
-        const devAlreadyExist = devices.find((d) => d.id === device.id);
+        /*const devAlreadyExist = devices.find((d) => d.id === device.id);
         if (!devAlreadyExist) setDevices([...devices, device]);
-        console.log(device.id);
+        console.log(device.id);*/
+
+        if (device.id === ROBOT_UID_CONNECT) {
+          manager.stopDeviceScan();
+
+          // We found the device, connect to it (and subscribe to events etc)
+          device
+            .connect()
+            .then((device) => {
+              device.discoverAllServicesAndCharacteristics();
+            })
+            .then((device) => {
+              device.monitorCharacteristicForService(device.id);
+              // Här ska vi göra skit
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        }
       }
     });
   };

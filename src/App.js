@@ -21,6 +21,9 @@ const store = createStore(model);
 
 const Tab = createBottomTabNavigator();
 
+/*
+  Scaffold react native application
+*/
 const App = () => {
   return (
     <StoreProvider store={store}>

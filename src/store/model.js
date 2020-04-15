@@ -21,8 +21,14 @@ const users = {
   ],
 };
 
+const STATUS_INIT = 'INIT';
+const STATUS_DISCONNECTED = 'DISCONNECTED';
+const STATUS_CONNECTED = 'CONNECTED';
+
 const bluetooth = {
   manager: null,
+  status: STATUS_INIT,
+  initBluetooth: action((state) => {}),
   setManager: action((state, manager) => {
     state.manager = manager;
   }),
