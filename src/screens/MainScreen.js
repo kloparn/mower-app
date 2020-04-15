@@ -16,18 +16,12 @@ import {
 } from 'react-native';
 
 const MainScreen = () => {
-  const users = useStoreState((state) => state.users.items);
-  const manager = useStoreState((state) => state.bluetooth.manager);
+  const {manager, data_debug} = useStoreState((state) => state.bluetooth);
   console.log('manager', manager);
   return (
     <MainView>
-      {users.map((u) => {
-        return (
-          <MainText>
-            Name:{u.name}
-            Id: {u.id}
-          </MainText>
-        );
+      {data_debug.map((d) => {
+        return <MainText key={d}>Data: {d}</MainText>;
       })}
     </MainView>
   );
