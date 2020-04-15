@@ -6,8 +6,8 @@ export const requestLocationPermission = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
-        title: 'Cool Photo App Location Permission',
-        message: 'We need your location' + 'So we can find your dog', // LIKE THIS BITCH
+        title: 'Location permission',
+        message: 'Location permission needed for bluetooth connection to mower', // LIKE THIS BITCH
         buttonNeutral: 'Ask Me Later',
         buttonNegative: 'Cancel',
         buttonPositive: 'OK',
