@@ -46,7 +46,7 @@ const bluetooth = {
             .then((device) => {
               state.setStatus(STATUS_CONNECTED);
               // Subscribe to writes from robot
-              device.monitorCharacteristicForService(
+              manager.monitorCharacteristicForService(
                 ROBOT_SERVICE_UUID,
                 ROBOT_READ_CHARACTERISTIC_UUID,
                 (err, characteristic) => {
