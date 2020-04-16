@@ -65,7 +65,7 @@ const bluetooth = {
                       } else {
                         const data = characteristic.value;
                         console.log('characteristic', data);
-                        state.addToData_debug(data);
+                        state.addToData_debug(decode(data));
                       }
                     },
                   );
