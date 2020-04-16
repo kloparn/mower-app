@@ -41,11 +41,6 @@ const bluetooth = {
             .connect()
             .then((device) => {
               console.log('device pre services', device);
-              state.setStatus(STATUS_VERIFYING);
-              device.discoverAllServicesAndCharacteristics();
-            })
-            .then((device) => {
-              console.log('device post services', device);
               state.setStatus(STATUS_CONNECTED);
               // Subscribe to writes from robot
               device.monitorCharacteristicForService(
