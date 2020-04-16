@@ -50,7 +50,7 @@ const bluetooth = {
               // Subscribe to writes from robot
               device.monitorCharacteristicForService(
                 ROBOT_SERVICE_UUID,
-                ROBOT_READ_CHARACTERISTIC_UUID,
+                ROBOT_WRITE_CHARACTERISTIC_UUID,
                 (err, characteristic) => {
                   if (err) {
                     console.error(err);
