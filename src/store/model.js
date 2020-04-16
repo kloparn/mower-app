@@ -102,10 +102,9 @@ const bluetooth = {
   sendCommandToRobot: action((state, message) => {
     const manager = state.manager;
     const device = state.device;
-    console.log('SENDMANAGER: ', debug(manager));
+    //console.log('SENDMANAGER: ', debug(manager));
     const base64EncodedMsg = encode(message);
-    console.log('ENCODED MSG: ', base64EncodedMsg);
-    //------writeCharacteristicWithResponseForService
+    //console.log('ENCODED MSG: ', base64EncodedMsg);
     manager.writeCharacteristicWithoutResponseForDevice(
       device.id,
       ROBOT_SERVICE_UUID,
