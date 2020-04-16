@@ -2,6 +2,7 @@ import React, {Fragment, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useStoreState, useStoreActions} from 'easy-peasy';
 import {requestLocationPermission} from '../helpers/permissions';
+import {SendBTButton} from '../components';
 
 import {
   SafeAreaView,
@@ -36,6 +37,12 @@ const ControlScreen = () => {
           title="Location permission"
           onPress={requestLocationPermission}
         />
+        {status === 'CONNECTED' && (
+          <View>
+            <SendBTButton msg="0" text="Send 0" />
+            <SendBTButton msg="1" text="Send 1" />
+          </View>
+        )}
       </SafeAreaView>
     </Fragment>
   );

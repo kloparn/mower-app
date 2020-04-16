@@ -1,5 +1,6 @@
 import {BleManager} from 'react-native-ble-plx';
 import {action, thunk} from 'easy-peasy';
+import {decode, encode} from 'base-64';
 
 // UUIDS
 const ROBOT_SERVICE_UUID = '0000ffe1-0000-1000-8000-00805f9b34fb';
@@ -83,7 +84,7 @@ const bluetooth = {
     state.data_debug.push(data);
   }),
   sendCommandToRobot: action((state, message) => {
-    const base64EncodedMsg = btoa(message);
+    const base64EncodedMsg = encode(message);
     state.manager.writeCharacteristicWithResponseForService(
       ROBOT_SERVICE_UUID,
       ROBOT_WRITE_CHARACTERISTIC_UUID,
