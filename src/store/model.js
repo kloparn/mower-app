@@ -41,24 +41,28 @@ const bluetooth = {
             .connect()
             .then((device) => {
               console.log('device pre services', device);
-              state.setStatus(STATUS_CONNECTED);
-              // Subscribe to writes from robot
-              device.monitorCharacteristicForService(
-                ROBOT_SERVICE_UUID,
-                ROBOT_WRITE_CHARACTERISTIC_UUID,
-                (err, characteristic) => {
-                  if (err) {
-                    console.error(err);
-                    state.errorMsg = 'error monitor characteristics';
-                    state.setStatus(STATUS_ERROR);
-                  } else {
-                    const data = characteristic.value;
-                    console.log('characteristic', data);
-                    state.addToData_debug(data);
-                  }
-                },
-              ); // DO THIS
-              // Do more stuff here.
+              state.setStatus(STATUS_VERIFYING);
+              device.discoverAllServicesAndCharacteristics().then((device) => {
+                console.log('device post services', device);
+                state.setStatus(STATUS_CONNECTED);
+                // Subscribe to writes from robot
+                device.monitorCharacteristicForService(
+                  ROBOT_SERVICE_UUID,
+                  ROBOT_READ_CHARACTERISTIC_UUID,
+                  (err, characteristic) => {
+                    if (err) {
+                      console.error(err);
+                      state.errorMsg = 'error monitor characteristics';
+                      state.setStatus(STATUS_ERROR);
+                    } else {
+                      const data = characteristic.value;
+                      console.log('characteristic', data);
+                      state.addToData_debug(data);
+                    }
+                  },
+                ); // DO THIS
+                // Do more stuff here.
+              });
             })
             .catch((err) => {
               console.error(err);
