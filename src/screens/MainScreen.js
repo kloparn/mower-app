@@ -20,8 +20,8 @@ const MainScreen = () => {
   console.log('manager', manager);
   return (
     <MainView>
-      {data_debug.map((d) => {
-        return <MainText key={d}>Data: {d}</MainText>;
+      {data_debug.map((d, i) => {
+        return <MainText key={i}>Data: {d}</MainText>;
       })}
     </MainView>
   );
