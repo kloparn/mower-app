@@ -1,5 +1,5 @@
 import {BleManager} from 'react-native-ble-plx';
-import {action, thunk} from 'easy-peasy';
+import {action, thunk, debug} from 'easy-peasy';
 import {decode, encode} from 'base-64';
 
 // UUIDS
@@ -20,8 +20,12 @@ const bluetooth = {
   status: STATUS_INIT,
   errorMsg: null,
   data_debug: [],
-  initBluetooth: thunk((state) => {
+  initBluetooth: thunk((state, payload, helpers) => {
     // Setup bluetooth manager
+    /*const store = helpers.getStoreState();
+    const manager = store.manager;
+    console.log('this is le manager: ', debug(manager));*/
+
     const manager = new BleManager();
 
     // Search for robot and connect.
@@ -42,27 +46,35 @@ const bluetooth = {
             .then((device) => {
               console.log('device pre services', device);
               state.setStatus(STATUS_VERIFYING);
-              device.discoverAllServicesAndCharacteristics().then((device) => {
-                console.log('device post services', device);
-                state.setStatus(STATUS_CONNECTED);
-                // Subscribe to writes from robot
-                device.monitorCharacteristicForService(
-                  ROBOT_SERVICE_UUID,
-                  ROBOT_READ_CHARACTERISTIC_UUID,
-                  (err, characteristic) => {
-                    if (err) {
-                      console.error(err);
-                      state.errorMsg = 'error monitor characteristics';
-                      state.setStatus(STATUS_ERROR);
-                    } else {
-                      const data = characteristic.value;
-                      console.log('characteristic', data);
-                      state.addToData_debug(data);
-                    }
-                  },
-                ); // DO THIS
-                // Do more stuff here.
-              });
+              device
+                .discoverAllServicesAndCharacteristics()
+                .then((device) => {
+                  console.log('device post services', device);
+                  state.setStatus(STATUS_CONNECTED);
+                  // Subscribe to writes from robot
+                  device.monitorCharacteristicForService(
+                    ROBOT_SERVICE_UUID,
+                    ROBOT_READ_CHARACTERISTIC_UUID,
+                    (err, characteristic) => {
+                      if (err) {
+                        console.error(err);
+                        state.errorMsg = 'error monitor characteristics';
+                        state.setStatus(STATUS_ERROR);
+                      } else {
+                        const data = characteristic.value;
+                        console.log('characteristic', data);
+                        state.addToData_debug(data);
+                      }
+                    },
+                  );
+                  // Set manager.
+                  state.setManager(manager);
+                })
+                .catch((err) => {
+                  console.error(err);
+                  state.errorMsg = 'error device discover services/chars';
+                  state.setStatus(STATUS_ERROR);
+                });
             })
             .catch((err) => {
               console.error(err);
@@ -72,8 +84,6 @@ const bluetooth = {
         }
       }
     });
-
-    state.setManager(manager);
   }),
   setManager: action((state, manager) => {
     state.manager = manager;
@@ -86,7 +96,7 @@ const bluetooth = {
   }),
   sendCommandToRobot: action((state, message) => {
     const base64EncodedMsg = encode(message);
-    state.manager.writeCharacteristicWithResponseForService(
+    state.manager.writeCharacteristicWithoutResponseForService(
       ROBOT_SERVICE_UUID,
       ROBOT_WRITE_CHARACTERISTIC_UUID,
       base64EncodedMsg,
