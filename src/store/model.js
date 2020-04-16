@@ -17,6 +17,7 @@ const STATUS_ERROR = 'ERROR';
 
 const bluetooth = {
   manager: null,
+  device: null,
   status: STATUS_INIT,
   errorMsg: null,
   data_debug: [],
@@ -51,6 +52,7 @@ const bluetooth = {
                 .then((device) => {
                   console.log('device post services', device);
                   state.setStatus(STATUS_CONNECTED);
+                  state.setDevice(device);
                   // Subscribe to writes from robot
                   device.monitorCharacteristicForService(
                     ROBOT_SERVICE_UUID,
@@ -91,15 +93,21 @@ const bluetooth = {
   setStatus: action((state, status) => {
     state.status = status;
   }),
+  setDevice: action((state, device) => {
+    state.device = device;
+  }),
   addToData_debug: action((state, data) => {
     state.data_debug.push(data);
   }),
   sendCommandToRobot: action((state, message) => {
     const manager = state.manager;
+    const device = state.device;
     console.log('SENDMANAGER: ', debug(manager));
     const base64EncodedMsg = encode(message);
     console.log('ENCODED MSG: ', base64EncodedMsg);
-    manager.writeCharacteristicWithoutResponseForService(
+    //------writeCharacteristicWithResponseForService
+    manager.writeCharacteristicWithoutResponseForDevice(
+      device.id,
       ROBOT_SERVICE_UUID,
       ROBOT_WRITE_CHARACTERISTIC_UUID,
       base64EncodedMsg,
