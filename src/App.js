@@ -13,7 +13,7 @@ import {
 } from 'easy-peasy';
 
 import model from './store/model';
-import {MainScreen, ControlScreen} from './screens';
+import {MainScreen, ControlScreen, VisualizationScreen} from './screens';
 
 import {bluetooth} from './helpers/icons';
 
@@ -36,6 +36,8 @@ const App = () => {
                   return <Icon name="home" size={size} color={color} />;
                 case 'Control':
                   return <Icon name="bluetooth" size={size} color={color} />;
+                case 'Visualization':
+                  return <Icon name="map" size={size} color={color} />;
                 default:
                   return <Icon name="question" size={size} color={color} />;
               }
@@ -43,6 +45,7 @@ const App = () => {
           })}>
           <Tab.Screen name="Control" component={ControlScreen} />
           <Tab.Screen name="Home" component={MainScreen} />
+          <Tab.Screen name="Visualization" component={VisualizationScreen} />
         </Tab.Navigator>
       </NavigationContainer>
     </StoreProvider>
