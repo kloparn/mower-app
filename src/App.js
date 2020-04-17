@@ -1,21 +1,13 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {
-  StoreProvider,
-  createStore,
-  useStoreState,
-  useStoreActions,
-} from 'easy-peasy';
+import {StoreProvider, createStore} from 'easy-peasy';
 
 import model from './store/model';
 import {MainScreen, ControlScreen, VisualizationScreen} from './screens';
-
-import {bluetooth} from './helpers/icons';
 
 const store = createStore(model);
 
