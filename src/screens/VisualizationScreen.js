@@ -11,16 +11,15 @@ import {
   Button,
 } from 'react-native';
 
+import {Layout} from '../components';
+
 const VisualizationScreen = () => {
   return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <View>
-          <Text>Hej backend :)))))))))))))</Text>
-        </View>
-      </SafeAreaView>
-    </Fragment>
+    <Layout>
+      <View>
+        <Text>Hej backend :)))))))))))))</Text>
+      </View>
+    </Layout>
   );
 };
 

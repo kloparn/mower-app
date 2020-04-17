@@ -23,7 +23,8 @@ const Layout = ({children}) => {
 };
 
 const StyledSafeAreaView = styled.SafeAreaView`
-  background-color: ${(props) => props.theme.colors.primary};
+  background: ${(props) => props.theme.colors.primary};
+  height: 100%;
 `;
 
 export default Layout;

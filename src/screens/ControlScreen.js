@@ -16,6 +16,8 @@ import {
   Button,
 } from 'react-native';
 
+import {Layout} from '../components';
+
 const ControlScreen = () => {
   const {initBluetooth} = useStoreActions((state) => state.bluetooth);
   const status = useStoreState((state) => state.bluetooth.status);
@@ -26,25 +28,20 @@ const ControlScreen = () => {
     functionName();
   }, []);*/
   return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <MainView>
-          <MainText>{status}</MainText>
-        </MainView>
-        <Button title="Connect" onPress={initBluetooth} />
-        <Button
-          title="Location permission"
-          onPress={requestLocationPermission}
-        />
-        {status === 'CONNECTED' && (
-          <View>
-            <SendBTButton msg="0" text="Send 0" />
-            <SendBTButton msg="1" text="Send 1" />
-          </View>
-        )}
-      </SafeAreaView>
-    </Fragment>
+    <Layout>
+      <MainView>
+        <MainText>{status}</MainText>
+      </MainView>
+      <Button title="Connect" onPress={initBluetooth} />
+      <Button title="Location permission" onPress={requestLocationPermission} />
+      {status === 'CONNECTED' && (
+        <View>
+          <SendBTButton msg="0" text="Send 0" />
+          <SendBTButton msg="1" text="Send 1" />
+        </View>
+      )}
+      <Text>Hello</Text>
+    </Layout>
   );
 };
 
