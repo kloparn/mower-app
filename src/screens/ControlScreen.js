@@ -14,6 +14,7 @@ import {
   PermissionsAndroid,
   Alert,
   Button,
+  TouchableOpacity,
 } from 'react-native';
 
 import {Layout} from '../components';
@@ -21,36 +22,64 @@ import {Layout} from '../components';
 const ControlScreen = () => {
   const {initBluetooth} = useStoreActions((state) => state.bluetooth);
   const status = useStoreState((state) => state.bluetooth.status);
-  /*useEffect(() => {
-    // Create an scoped async function in the hook
-    async function functionName() {}
-    // Execute the created function directly
-    functionName();
-  }, []);*/
+
+  const connectToRobot = () => {
+    PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    ).then((hasPermission) => {
+      if (hasPermission) {
+        initBluetooth();
+      } else {
+        requestLocationPermission();
+      }
+    });
+  };
   return (
     <Layout>
       <MainView>
-        <MainText>{status}</MainText>
+        {status === 'CONNECTED' ? (
+          <View>
+            <SendBTButton msg="0" text="Send 0" />
+            <SendBTButton msg="1" text="Send 1" />
+          </View>
+        ) : (
+          <>
+            <ConnectButton onPress={connectToRobot}>
+              <ConnectButtonText>Connect to Robot</ConnectButtonText>
+            </ConnectButton>
+            {status !== 'INIT' && <StatusText>{status}</StatusText>}
+          </>
+        )}
       </MainView>
-      <Button title="Connect" onPress={initBluetooth} />
-      <Button title="Location permission" onPress={requestLocationPermission} />
-      {status === 'CONNECTED' && (
-        <View>
-          <SendBTButton msg="0" text="Send 0" />
-          <SendBTButton msg="1" text="Send 1" />
-        </View>
-      )}
-      <Text>Hello</Text>
     </Layout>
   );
 };
 
-// TEMP
 const MainView = styled.View`
-  background-color: black;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
-const MainText = styled.Text`
-  color: white;
+
+const ConnectButton = styled.TouchableOpacity`
+  width: 60%;
+  background-color: ${(props) => props.theme.colors.secondary};
+  height: 20%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ConnectButtonText = styled.Text`
+  color: ${(props) => props.theme.colors.text};
+  font-size: 25px;
+`;
+
+const StatusText = styled.Text`
+  color: ${(props) => props.theme.colors.text};
+  font-size: 15px;
 `;
 
 export default ControlScreen;

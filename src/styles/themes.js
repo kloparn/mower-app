@@ -4,6 +4,6 @@ export const defaultTheme = {
     secondary: '#086972',
     third: '#17b978',
     forth: '#a7ff83',
-    text: '#fff',
+    text: '#ffffff',
   },
 };
