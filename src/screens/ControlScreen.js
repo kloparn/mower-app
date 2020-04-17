@@ -2,7 +2,7 @@ import React, {Fragment, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useStoreState, useStoreActions} from 'easy-peasy';
 import {requestLocationPermission} from '../helpers/permissions';
-import {SendBTButton} from '../components';
+import {MotorSlider, ControlStateButton, SendBTButton} from '../components';
 
 import {
   SafeAreaView,
@@ -36,21 +36,31 @@ const ControlScreen = () => {
   };
   return (
     <Layout>
-      <MainView>
-        {status === 'CONNECTED' ? (
-          <View>
+      {status === 'CONNECTED' ? (
+        <ControlView>
+          <TitleText>Control Mower</TitleText>
+          <DebugButtonsView>
             <SendBTButton msg="0" text="Send 0" />
             <SendBTButton msg="1" text="Send 1" />
-          </View>
-        ) : (
-          <>
-            <ConnectButton onPress={connectToRobot}>
-              <ConnectButtonText>Connect to Robot</ConnectButtonText>
-            </ConnectButton>
-            {status !== 'INIT' && <StatusText>{status}</StatusText>}
-          </>
-        )}
-      </MainView>
+          </DebugButtonsView>
+          <SliderView>
+            <MotorSlider left={true} />
+            <MotorSlider left={false} />
+          </SliderView>
+          <ButtonView>
+            <ControlStateButton text="Stop" />
+            <ControlStateButton text="Autonomous" />
+            <ControlStateButton text="Manual" />
+          </ButtonView>
+        </ControlView>
+      ) : (
+        <MainView>
+          <ConnectButton onPress={connectToRobot}>
+            <ConnectButtonText>Connect to Robot</ConnectButtonText>
+          </ConnectButton>
+          {status !== 'INIT' && <StatusText>{status}</StatusText>}
+        </MainView>
+      )}
     </Layout>
   );
 };
@@ -60,6 +70,33 @@ const MainView = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ControlView = styled.View`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+`;
+
+const TitleText = styled.Text`
+  color: ${(props) => props.theme.colors.text};
+  font-size: 25px;
+  text-align: center;
+`;
+
+const DebugButtonsView = styled.View``;
+
+const SliderView = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const ButtonView = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 `;
 
 const ConnectButton = styled.TouchableOpacity`

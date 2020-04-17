@@ -25,6 +25,7 @@ const Layout = ({children}) => {
 const StyledSafeAreaView = styled.SafeAreaView`
   background: ${(props) => props.theme.colors.primary};
   height: 100%;
+  width: 100%;
 `;
 
 export default Layout;
