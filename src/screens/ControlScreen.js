@@ -112,6 +112,7 @@ const ConnectButton = styled.TouchableOpacity`
 const ConnectButtonText = styled.Text`
   color: ${(props) => props.theme.colors.text};
   font-size: 25px;
+  text-align: center;
 `;
 
 const StatusText = styled.Text`
