@@ -10,10 +10,10 @@ go to : '\node_modules\metro-config\src\defaults\blacklist.js'
 then upgade the _sharedBlacklist_ variable to ->
 
 var sharedBlacklist = [
-/node*modules[\/\\]react[\/\\]dist[\/\\].*/,
-/website\/node*modules\/.*/,
-/heapCapture\/bundle\.js/,
-/._\/**tests**\/._/
+  /node_modules[\/\\]react[\/\\]dist[\/\\].*/,
+  /website\/node_modules\/.*/,
+  /heapCapture\/bundle\.js/,
+  /.*\/__tests__\/.*/
 ];
 
 There might also be a key issue, then you do this in side \android\app
