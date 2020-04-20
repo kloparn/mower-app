@@ -18,6 +18,8 @@ const STATUS_VERIFYING = 'VERIFYING';
 const STATUS_CONNECTED = 'CONNECTED';
 const STATUS_ERROR = 'ERROR';
 
+const MOTOR_START_VALUE = 90;
+
 /*
   TRACE:: #A1.1.3 -> State management in application.
 */
@@ -27,6 +29,8 @@ const bluetooth = {
   status: STATUS_INIT,
   errorMsg: null,
   data_debug: [],
+  leftMotor: MOTOR_START_VALUE,
+  rightMotor: MOTOR_START_VALUE,
   initBluetooth: thunk((state, payload, helpers) => {
     // Setup bluetooth manager
     /*const store = helpers.getStoreState();
@@ -38,7 +42,7 @@ const bluetooth = {
     // Search for robot and connect.
     manager.startDeviceScan(null, null, (error, device) => {
       state.setStatus(STATUS_SCANNING);
-      console.log('Scanning for robot...');
+      //console.log('Scanning for robot...');
       if (error) {
         console.log(error);
         state.errorMsg = 'error in startDeviceScan';
@@ -105,18 +109,29 @@ const bluetooth = {
   addToData_debug: action((state, data) => {
     state.data_debug.push(data);
   }),
+  setMotor: action((state, {left, value}) => {
+    if (left) state.leftMotor = value;
+    else state.rightMotor = value;
+  }),
   sendCommandToRobot: action((state, message) => {
     const manager = state.manager;
     const device = state.device;
     //console.log('SENDMANAGER: ', debug(manager));
     const base64EncodedMsg = encode(message);
-    //console.log('ENCODED MSG: ', base64EncodedMsg);
+    console.log('MSG: ', message);
+    console.log('ENCODED MSG: ', base64EncodedMsg);
     manager.writeCharacteristicWithoutResponseForDevice(
       device.id,
       ROBOT_SERVICE_UUID,
       ROBOT_WRITE_CHARACTERISTIC_UUID,
       base64EncodedMsg,
     );
+  }),
+  sendCommand: thunk((state, {d, lm, rm}) => {
+    console.log('LEFT MOTOR: ', lm);
+    console.log('RIGHT MOTOR: ', rm);
+    if (lm === null || rm === null) state.sendCommandToRobot(`:d${d};`);
+    else state.sendCommandToRobot(`:d${d}, l${lm}, r${rm};`);
   }),
 };
 

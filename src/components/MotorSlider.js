@@ -1,20 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
 import VerticalSlider from 'rn-vertical-slider';
+import {useStoreState, useStoreActions} from 'easy-peasy';
 
-const MotorSlider = ({left, value}) => {
+const MotorSlider = ({left}) => {
+  const {setMotor, sendCommand} = useStoreActions((state) => state.bluetooth);
+  const {leftMotor, rightMotor} = useStoreState((state) => state.bluetooth);
+  const currentMotorValue = left ? leftMotor : rightMotor;
   return (
     <VerticalSlider
-      value={50}
+      value={currentMotorValue}
       disabled={false}
       min={0}
-      max={100}
+      max={180}
       onChange={(value) => {
         //TODO: Send command to robot, with new value.
-        console.log('CHANGE', value);
+        if (value !== currentMotorValue) {
+          // Set the right motor value
+          setMotor({left, value});
+          // send correct thing
+          if (left) sendCommand({d: 2, lm: value, rm: rightMotor});
+          else sendCommand({d: 2, lm: leftMotor, rm: value});
+        }
       }}
       width={50}
       height={300}
-      step={1}
+      step={5}
       borderRadius={5}
       minimumTrackTintColor={'#17b978'}
       maximumTrackTintColor={'#086972'}
