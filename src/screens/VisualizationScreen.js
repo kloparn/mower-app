@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import {useStoreState, useStoreActions} from 'easy-peasy';
 import {
   SafeAreaView,
   StyleSheet,
