@@ -19,6 +19,9 @@ import {
 
 import {Layout} from '../components';
 
+/*
+  TRACE:: #A1.2.5 -> Input screen for the mower.
+*/
 const ControlScreen = () => {
   const {initBluetooth} = useStoreActions((state) => state.bluetooth);
   const status = useStoreState((state) => state.bluetooth.status);
@@ -36,7 +39,7 @@ const ControlScreen = () => {
   };
   return (
     <Layout>
-      {status === 'CONNECTED' ? (
+      {status === 'SCANNING' ? (
         <ControlView>
           <TitleText>Control Mower</TitleText>
           <DebugButtonsView>

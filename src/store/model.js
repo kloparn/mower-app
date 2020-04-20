@@ -1,3 +1,6 @@
+/*
+  TRACE:: #A1.1.2 -> State management in application.
+*/
 import {BleManager} from 'react-native-ble-plx';
 import {action, thunk, debug} from 'easy-peasy';
 import {decode, encode} from 'base-64';
@@ -15,6 +18,9 @@ const STATUS_VERIFYING = 'VERIFYING';
 const STATUS_CONNECTED = 'CONNECTED';
 const STATUS_ERROR = 'ERROR';
 
+/*
+  TRACE:: #A1.1.3 -> State management in application.
+*/
 const bluetooth = {
   manager: null,
   device: null,

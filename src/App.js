@@ -15,7 +15,8 @@ const store = createStore(model);
 const Tab = createBottomTabNavigator();
 
 /*
-  Scaffold react native application
+  TRACE:: #A1.1.1 -> Scaffold react native application.
+  TRACE:: #A1.2.4 -> Screen navigation in application.
 */
 const App = () => {
   return (
