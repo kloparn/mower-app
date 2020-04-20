@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useStoreState, useStoreActions} from 'easy-peasy';
 
 import {
   SafeAreaView,
@@ -14,9 +15,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const ControlStateButton = ({text}) => {
+const ControlStateButton = ({text, id}) => {
+  const {sendCommand} = useStoreActions((state) => state.bluetooth);
   return (
-    <ControlButton>
+    <ControlButton
+      onPress={() => {
+        sendCommand({d: id});
+      }}>
       <ControlText>{text}</ControlText>
     </ControlButton>
   );

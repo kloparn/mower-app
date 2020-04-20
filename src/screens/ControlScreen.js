@@ -51,9 +51,9 @@ const ControlScreen = () => {
             <MotorSlider left={false} />
           </SliderView>
           <ButtonView>
-            <ControlStateButton text="Stop" />
-            <ControlStateButton text="Autonomous" />
-            <ControlStateButton text="Manual" />
+            <ControlStateButton text="Stop" id={0} />
+            <ControlStateButton text="Autonomous" id={1} />
+            <ControlStateButton text="Manual" id={2} />
           </ButtonView>
         </ControlView>
       ) : (

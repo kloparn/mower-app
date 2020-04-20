@@ -130,7 +130,8 @@ const bluetooth = {
   sendCommand: thunk((state, {d, lm, rm}) => {
     console.log('LEFT MOTOR: ', lm);
     console.log('RIGHT MOTOR: ', rm);
-    if (lm === null || rm === null) state.sendCommandToRobot(`:d${d};`);
+    if (lm === undefined || rm === undefined)
+      state.sendCommandToRobot(`:d${d};`);
     else state.sendCommandToRobot(`:d${d}, l${lm}, r${rm};`);
   }),
 };
