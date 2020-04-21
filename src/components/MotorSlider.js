@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import VerticalSlider from 'rn-vertical-slider';
 import {useStoreState, useStoreActions} from 'easy-peasy';
 
+/*
+  TRACE:: #A1.2.6 -> Bluetooth commands for sending the user inputs
+*/
 const MotorSlider = ({left}) => {
   const {setMotor, sendCommand} = useStoreActions((state) => state.bluetooth);
   const {leftMotor, rightMotor} = useStoreState((state) => state.bluetooth);

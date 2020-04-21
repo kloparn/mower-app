@@ -21,7 +21,7 @@ const STATUS_ERROR = 'ERROR';
 const MOTOR_START_VALUE = 90;
 
 /*
-  TRACE:: #A1.1.3 -> State management in application.
+  TRACE:: #A1.1.3 -> Low energy bluetooth connection to speak with the robot.
 */
 const bluetooth = {
   manager: null,
@@ -113,6 +113,9 @@ const bluetooth = {
     if (left) state.leftMotor = value;
     else state.rightMotor = value;
   }),
+  /*
+  TRACE:: #A1.2.6 -> Bluetooth commands for sending the user inputs
+  */
   sendCommandToRobot: action((state, message) => {
     const manager = state.manager;
     const device = state.device;
