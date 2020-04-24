@@ -29,6 +29,8 @@ target 'testapp' do
 
   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'testappTests' do
     inherit! :search_paths
     # Pods for testing
