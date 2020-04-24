@@ -4,6 +4,10 @@ import {useStoreState, useStoreActions} from 'easy-peasy';
 import {requestLocationPermission} from '../helpers/permissions';
 import {MotorSlider, ControlStateButton, SendBTButton} from '../components';
 
+/*
+  TRACE:: #A1.2.5 -> Input screen for the mower.
+*/
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,9 +23,6 @@ import {
 
 import {Layout} from '../components';
 
-/*
-  TRACE:: #A1.2.5 -> Input screen for the mower.
-*/
 const ControlScreen = () => {
   const {initBluetooth} = useStoreActions((state) => state.bluetooth);
   const status = useStoreState((state) => state.bluetooth.status);
@@ -39,7 +40,7 @@ const ControlScreen = () => {
   };
   return (
     <Layout>
-      {status === 'SCANNING' ? (
+      {status === 'CONNECTED' ? (
         <ControlView>
           <TitleText>Control Mower</TitleText>
           <DebugButtonsView>

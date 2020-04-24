@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+/*
+  TRACE:: #A1.1.1 -> Scaffold react native application.
+*/
+
 import {
   SafeAreaView,
   StyleSheet,

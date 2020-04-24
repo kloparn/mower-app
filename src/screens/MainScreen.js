@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useStoreState} from 'easy-peasy';
 
+/*
+  TRACE:: #A1.1.1 -> Scaffold react native application.
+*/
+
 import {
   SafeAreaView,
   StyleSheet,

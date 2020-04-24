@@ -3,6 +3,7 @@ import VerticalSlider from 'rn-vertical-slider';
 import {useStoreState, useStoreActions} from 'easy-peasy';
 
 /*
+  TRACE:: #A1.2.5 -> Input screen for the mower.
   TRACE:: #A1.2.6 -> Bluetooth commands for sending the user inputs
 */
 const MotorSlider = ({left}) => {

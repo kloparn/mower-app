@@ -1,9 +1,11 @@
-/*
-  TRACE:: #A1.1.2 -> State management in application.
-*/
 import {BleManager} from 'react-native-ble-plx';
 import {action, thunk, debug} from 'easy-peasy';
 import {decode, encode} from 'base-64';
+
+/*
+  TRACE:: #A1.1.2 -> State management in application.
+  TRACE:: #A1.1.3 -> Low energy bluetooth connection to speak with the robot.
+*/
 
 // UUIDS
 const ROBOT_SERVICE_UUID = '0000ffe1-0000-1000-8000-00805f9b34fb';
@@ -20,9 +22,6 @@ const STATUS_ERROR = 'ERROR';
 
 const MOTOR_START_VALUE = 90;
 
-/*
-  TRACE:: #A1.1.3 -> Low energy bluetooth connection to speak with the robot.
-*/
 const bluetooth = {
   manager: null,
   device: null,
@@ -33,16 +32,12 @@ const bluetooth = {
   rightMotor: MOTOR_START_VALUE,
   initBluetooth: thunk((state, payload, helpers) => {
     // Setup bluetooth manager
-    /*const store = helpers.getStoreState();
-    const manager = store.manager;
-    console.log('this is le manager: ', debug(manager));*/
 
     const manager = new BleManager();
 
     // Search for robot and connect.
     manager.startDeviceScan(null, null, (error, device) => {
       state.setStatus(STATUS_SCANNING);
-      //console.log('Scanning for robot...');
       if (error) {
         console.log(error);
         state.errorMsg = 'error in startDeviceScan';
@@ -50,7 +45,6 @@ const bluetooth = {
       } else {
         if (device.name === ROBOT_NAME) {
           manager.stopDeviceScan();
-
           // We found the device, connect to it (and subscribe to events etc)
           device
             .connect()

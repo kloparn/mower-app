@@ -2,6 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import {useStoreState, useStoreActions} from 'easy-peasy';
 
+/*
+  TRACE:: #A1.2.5 -> Input screen for the mower.
+*/
+
 import {
   SafeAreaView,
   StyleSheet,
