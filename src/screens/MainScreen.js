@@ -17,6 +17,7 @@ import {
   PermissionsAndroid,
   Alert,
   Button,
+  FlatList,
 } from 'react-native';
 
 import {Layout} from '../components';
@@ -27,9 +28,11 @@ const MainScreen = () => {
   return (
     <Layout>
       <MainView>
-        {data_debug.map((d, i) => {
-          return <MainText key={i}>Data: {d}</MainText>;
-        })}
+        <FlatList
+          data={data_debug}
+          renderItem={({item}) => <MainText key={item}>Data: {item}</MainText>}
+          keyExtractor={(item) => item}
+        />
       </MainView>
     </Layout>
   );
@@ -41,6 +44,7 @@ const MainView = styled.View`
 `;
 const MainText = styled.Text`
   color: white;
+  font-size: 24px;
 `;
 
 export default MainScreen;

@@ -24,7 +24,9 @@ import {
 import {Layout} from '../components';
 
 const ControlScreen = () => {
-  const {initBluetooth} = useStoreActions((state) => state.bluetooth);
+  const {initBluetooth, sendPositionToBackEnd} = useStoreActions(
+    (state) => state.bluetooth,
+  );
   const status = useStoreState((state) => state.bluetooth.status);
 
   const connectToRobot = () => {
@@ -40,7 +42,7 @@ const ControlScreen = () => {
   };
   return (
     <Layout>
-      {status === 'CONNECTED' ? (
+      {status === 'SCANNING' ? (
         <ControlView>
           <TitleText>Control Mower</TitleText>
           <DebugButtonsView>
@@ -63,6 +65,12 @@ const ControlScreen = () => {
             <ConnectButtonText>Connect to Robot</ConnectButtonText>
           </ConnectButton>
           {status !== 'INIT' && <StatusText>{status}</StatusText>}
+          <ConnectButton
+            onPress={() => {
+              sendPositionToBackEnd({flag: 0, position: {x: 1, y: 3}});
+            }}>
+            <ConnectButtonText>Press me</ConnectButtonText>
+          </ConnectButton>
         </MainView>
       )}
     </Layout>
@@ -111,6 +119,7 @@ const ConnectButton = styled.TouchableOpacity`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 2px;
 `;
 
 const ConnectButtonText = styled.Text`

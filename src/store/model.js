@@ -1,11 +1,22 @@
 import {BleManager} from 'react-native-ble-plx';
 import {action, thunk, debug} from 'easy-peasy';
 import {decode, encode} from 'base-64';
+import axios from 'axios';
 
 /*
   TRACE:: #A1.1.2 -> State management in application.
   TRACE:: #A1.1.3 -> Low energy bluetooth connection to speak with the robot.
 */
+
+// URL
+const API_POST_URL = 'https://leather-batend.herokuapp.com/api/avoidance';
+const API_GET_URL = 'https://leather-batend.herokuapp.com/api/session';
+const API_KEY = 'sdfasdfasdfasdfa';
+const AXIOS_CONFIG = {
+  headers: {
+    api_key: API_KEY,
+  },
+};
 
 // UUIDS
 const ROBOT_SERVICE_UUID = '0000ffe1-0000-1000-8000-00805f9b34fb';
@@ -27,7 +38,31 @@ const bluetooth = {
   device: null,
   status: STATUS_INIT,
   errorMsg: null,
-  data_debug: [],
+  data_debug: [
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    '5141d1dd1',
+    '12312412451234',
+    'dab',
+  ],
   leftMotor: MOTOR_START_VALUE,
   rightMotor: MOTOR_START_VALUE,
   initBluetooth: thunk((state, payload, helpers) => {
@@ -49,12 +84,10 @@ const bluetooth = {
           device
             .connect()
             .then((device) => {
-              console.log('device pre services', device);
               state.setStatus(STATUS_VERIFYING);
               device
                 .discoverAllServicesAndCharacteristics()
                 .then((device) => {
-                  console.log('device post services', device);
                   state.setStatus(STATUS_CONNECTED);
                   state.setDevice(device);
                   // Subscribe to writes from robot
@@ -70,6 +103,7 @@ const bluetooth = {
                         const data = characteristic.value;
                         console.log('characteristic', data);
                         state.addToData_debug(decode(data));
+                        // Check what the data contains before sending it to the backend
                       }
                     },
                   );
@@ -107,14 +141,16 @@ const bluetooth = {
     if (left) state.leftMotor = value;
     else state.rightMotor = value;
   }),
+
   /*
   TRACE:: #A1.2.6 -> Bluetooth commands for sending the user inputs
   */
+
   sendCommandToRobot: action((state, message) => {
     const manager = state.manager;
     const device = state.device;
-    //console.log('SENDMANAGER: ', debug(manager));
     const base64EncodedMsg = encode(message);
+    // Temp for debugging while sending information to the robot
     console.log('MSG: ', message);
     console.log('ENCODED MSG: ', base64EncodedMsg);
     manager.writeCharacteristicWithoutResponseForDevice(
@@ -125,11 +161,24 @@ const bluetooth = {
     );
   }),
   sendCommand: thunk((state, {d, lm, rm}) => {
-    console.log('LEFT MOTOR: ', lm);
-    console.log('RIGHT MOTOR: ', rm);
+    //console.log('LEFT MOTOR: ', lm);
+    //console.log('RIGHT MOTOR: ', rm);
     if (lm === undefined || rm === undefined)
       state.sendCommandToRobot(`:d${d};`);
     else state.sendCommandToRobot(`:d${d}, l${lm}, r${rm};`);
+  }),
+  sendPositionToBackEnd: thunk(async (state, {flag, position}) => {
+    console.log('flag: ', flag);
+    console.log('Date: ', Date.now());
+    console.log('position: ', position);
+    const data = {
+      position,
+      flag,
+      date: Date.now(),
+    };
+
+    const res = await axios.post(API_POST_URL, data, AXIOS_CONFIG);
+    console.log(res.data);
   }),
 };
 
