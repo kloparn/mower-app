@@ -30,7 +30,7 @@ const App = () => {
                   case 'Home':
                     return <Icon name="home" size={size} color={color} />;
                   case 'Control':
-                    return <Icon name="bluetooth" size={size} color={color} />;
+                    return <Icon name="gamepad" size={size} color={color} />;
                   case 'Visualization':
                     return <Icon name="map" size={size} color={color} />;
                   default:

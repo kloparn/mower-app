@@ -45,10 +45,6 @@ const ControlScreen = () => {
       {status === 'SCANNING' ? (
         <ControlView>
           <TitleText>Control Mower</TitleText>
-          <DebugButtonsView>
-            <SendBTButton msg="0" text="Send 0" />
-            <SendBTButton msg="1" text="Send 1" />
-          </DebugButtonsView>
           <SliderView>
             <MotorSlider left={true} />
             <MotorSlider left={false} />
