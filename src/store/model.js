@@ -182,10 +182,6 @@ const bluetooth = {
   }),
 };
 
-/*const positions = {
-
-};*/
-
 export default {
   bluetooth,
 };
