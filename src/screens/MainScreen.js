@@ -31,7 +31,7 @@ const MainScreen = () => {
         <FlatList
           data={data_debug}
           renderItem={({item}) => <MainText key={item}>Data: {item}</MainText>}
-          keyExtractor={(item) => item}
+          keyExtractor={(item, index) => index}
         />
       </MainView>
     </Layout>
