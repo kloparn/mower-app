@@ -31,7 +31,7 @@ const STATUS_VERIFYING = 'VERIFYING';
 const STATUS_CONNECTED = 'CONNECTED';
 const STATUS_ERROR = 'ERROR';
 
-const MOTOR_START_VALUE = 90;
+const MOTOR_START_VALUE = 200;
 
 const bluetooth = {
   manager: null,

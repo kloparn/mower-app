@@ -15,7 +15,7 @@ const MotorSlider = ({left}) => {
       value={currentMotorValue}
       disabled={false}
       min={0}
-      max={180}
+      max={400}
       onChange={(value) => {
         //TODO: Send command to robot, with new value.
         if (value !== currentMotorValue) {
@@ -28,7 +28,7 @@ const MotorSlider = ({left}) => {
       }}
       width={50}
       height={300}
-      step={5}
+      step={10}
       borderRadius={5}
       minimumTrackTintColor={'#17b978'}
       maximumTrackTintColor={'#086972'}
