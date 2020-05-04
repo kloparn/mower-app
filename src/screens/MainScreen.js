@@ -24,7 +24,6 @@ import {Layout} from '../components';
 
 const MainScreen = () => {
   const {manager, data_debug} = useStoreState((state) => state.bluetooth);
-  console.log('manager', manager);
   return (
     <Layout>
       <MainView>
