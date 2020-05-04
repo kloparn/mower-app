@@ -78,7 +78,7 @@ const bluetooth = {
                       } else {
                         const data = characteristic.value;
                         console.log('characteristic', data);
-                        const decodedData = decode(data);
+                        let decodedData = decode(data);
                         state.addToData_debug(decodedData);
 
                         // Check what the data contains before sending it to the backend
