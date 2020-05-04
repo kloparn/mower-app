@@ -77,7 +77,7 @@ const bluetooth = {
                         state.setStatus(STATUS_ERROR);
                       } else {
                         const data = characteristic.value;
-                        console.log('characteristic', data);
+                        //console.log('characteristic', data);
                         let decodedData = decode(data);
                         state.addToData_debug(decodedData);
 
