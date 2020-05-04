@@ -41,9 +41,14 @@ const bluetooth = {
   data_debug: [],
   leftMotor: MOTOR_START_VALUE,
   rightMotor: MOTOR_START_VALUE,
+  lineSensor: null,
+  motionSensor: null,
+  buffer: '',
   initBluetooth: thunk((state, payload, helpers) => {
-    // Setup bluetooth manager
+    // Fetch local state
+    const {buffer} = helpers.getState();
 
+    // Setup bluetooth manager
     const manager = new BleManager();
 
     // Search for robot and connect.
@@ -79,51 +84,18 @@ const bluetooth = {
                         const data = characteristic.value;
                         //console.log('characteristic', data);
                         let decodedData = decode(data);
-                        state.addToData_debug(decodedData);
 
-                        // Check what the data contains before sending it to the backend
-                        if (
-                          decodedData[0] != ':' ||
-                          decodedData[decodedData.length - 1] != ';'
-                        )
-                          return;
+                        // Buffer loop
+                        let tempBuffer = buffer;
+                        decodedData.forEach((dChar) => {
+                          tempBuffer += dChar;
+                          if (dChar == ';') {
+                            state.prepareToReceiveData(tempBuffer);
+                            tempBuffer = '';
+                          }
+                        });
 
-                        // Remove end and start
-                        decodedData = decodedData.substring(
-                          1,
-                          decodedData.length - 1,
-                        );
-
-                        const type = decodedData[0];
-
-                        decodedData = decodedData.substring(
-                          1,
-                          decodedData.length,
-                        );
-                        const args = decodedData.split(',');
-
-                        switch (type) {
-                          case 's':
-                            // Informing the user that the robot avoided something
-                            // update sensor value state
-                            // Check if the value is above a certain number,
-                            // Check if 0 or 1
-                            console.log('type: ', type);
-                            console.log('args: ', args);
-                            break;
-                          case 'p':
-                            const position = {x: args[0], y: args[1]};
-                            const flag = args[2];
-                            console.log('type: ', type);
-                            console.log('args: ', args);
-                            state.sendPositionToBackEnd({flag, position});
-                            break;
-                          default:
-                            console.log(
-                              "ERROR, GOT A NUMTYPE WE DON'T CONTROL",
-                            );
-                            break;
-                        }
+                        state.setBuffer(tempBuffer);
                       }
                     },
                   );
@@ -145,6 +117,41 @@ const bluetooth = {
       }
     });
   }),
+  prepareToReceiveData: thunk((state, decodedData) => {
+    // Debug
+    state.addToData_debug(decodedData);
+
+    // Remove end and start
+    decodedData = decodedData.substring(1, decodedData.length - 1);
+
+    const type = decodedData[0];
+
+    decodedData = decodedData.substring(1, decodedData.length);
+    const args = decodedData.split(',');
+
+    switch (type) {
+      case 's':
+        // Informing the user that the robot avoided something
+        // update sensor value state
+        // Check if the value is above a certain number,
+        // Check if 0 or 1
+        console.log('type: ', type);
+        console.log('args: ', args);
+        state.setLineSensor(args[0]);
+        state.setMotionSensor(args[1]);
+        break;
+      case 'p':
+        const position = {x: args[0], y: args[1]};
+        const flag = args[2];
+        console.log('type: ', type);
+        console.log('args: ', args);
+        state.sendPositionToBackEnd({flag, position});
+        break;
+      default:
+        console.log("ERROR, GOT A NUMTYPE WE DON'T CONTROL");
+        break;
+    }
+  }),
   setManager: action((state, manager) => {
     state.manager = manager;
   }),
@@ -160,6 +167,15 @@ const bluetooth = {
   setMotor: action((state, {left, value}) => {
     if (left) state.leftMotor = value;
     else state.rightMotor = value;
+  }),
+  setLineSensor: action((state, newSensorVal) => {
+    if (newSensorVal != state.lineSensor) state.lineSensor = newSensorVal;
+  }),
+  setMotionSensor: action((state, newSensorVal) => {
+    if (newSensorVal != state.motionSensor) state.motionSensor = newSensorVal;
+  }),
+  setBuffer: action((state, newBuffer) => {
+    state.buffer = newBuffer;
   }),
 
   /*
