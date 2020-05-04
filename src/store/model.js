@@ -183,7 +183,7 @@ const bluetooth = {
     //console.log('RIGHT MOTOR: ', rm);
     if (lm === undefined || rm === undefined)
       state.sendCommandToRobot(`:d${d};`);
-    else state.sendCommandToRobot(`:d${d}, l${lm}, r${rm};`);
+    else state.sendCommandToRobot(`:l${lm},r${rm};`);
   }),
   sendPositionToBackEnd: thunk(async (state, {flag, position}) => {
     console.log('flag: ', flag);
