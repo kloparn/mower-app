@@ -42,7 +42,7 @@ const ControlScreen = () => {
   };
   return (
     <Layout>
-      {status === 'SCANNING' ? (
+      {status === 'CONNECTED' ? (
         <ControlView>
           <TitleText>Control Mower</TitleText>
           <SliderView>
