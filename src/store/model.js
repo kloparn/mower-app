@@ -114,6 +114,8 @@ const bluetooth = {
                           case 'p':
                             const position = {x: args[0], y: args[1]};
                             const flag = args[2];
+                            console.log('type: ', type);
+                            console.log('args: ', args);
                             state.sendPositionToBackEnd({flag, position});
                             break;
                           default:
