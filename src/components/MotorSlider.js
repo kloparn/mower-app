@@ -18,14 +18,13 @@ const MotorSlider = ({left}) => {
       max={180}
       onChange={(value) => {
         //TODO: Send command to robot, with new value.
-        /*if (value !== currentMotorValue) {
+        if (value !== currentMotorValue) {
           // Set the right motor value
           setMotor({left, value});
           // send correct thing
           if (left) sendCommand({d: 2, lm: value, rm: rightMotor});
           else sendCommand({d: 2, lm: leftMotor, rm: value});
         }
-        */
       }}
       width={50}
       height={300}

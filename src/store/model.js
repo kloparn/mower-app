@@ -78,8 +78,50 @@ const bluetooth = {
                       } else {
                         const data = characteristic.value;
                         console.log('characteristic', data);
-                        state.addToData_debug(decode(data));
+                        const decodedData = decode(data);
+                        state.addToData_debug(decodedData);
+
                         // Check what the data contains before sending it to the backend
+                        if (
+                          decodedData[0] != ':' ||
+                          decodedData[decodedData.length - 1] != ';'
+                        )
+                          return;
+
+                        // Remove end and start
+                        decodedData = decodedData.substring(
+                          1,
+                          decodedData.length - 1,
+                        );
+
+                        const type = decodedData[0];
+
+                        decodedData = decodedData.substring(
+                          1,
+                          decodedData.length,
+                        );
+                        const args = decodedData.split(',');
+
+                        switch (type) {
+                          case 's':
+                            // Informing the user that the robot avoided something
+                            // update sensor value state
+                            // Check if the value is above a certain number,
+                            // Check if 0 or 1
+                            console.log('type: ', type);
+                            console.log('args: ', args);
+                            break;
+                          case 'p':
+                            const position = {x: args[0], y: args[1]};
+                            const flag = args[2];
+                            state.sendPositionToBackEnd({flag, position});
+                            break;
+                          default:
+                            console.log(
+                              "ERROR, GOT A NUMTYPE WE DON'T CONTROL",
+                            );
+                            break;
+                        }
                       }
                     },
                   );
@@ -148,9 +190,11 @@ const bluetooth = {
     console.log('Date: ', Date.now());
     console.log('position: ', position);
     const data = {
-      position,
-      flag,
-      date: Date.now(),
+      avoidance: {
+        position,
+        flag,
+        date: Date(),
+      },
     };
 
     const res = await axios.post(API_POST_URL, data, AXIOS_CONFIG);
