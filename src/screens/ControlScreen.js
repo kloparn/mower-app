@@ -2,7 +2,13 @@ import React, {Fragment, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useStoreState, useStoreActions} from 'easy-peasy';
 import {requestLocationPermission} from '../helpers/permissions';
-import {MotorSlider, ControlStateButton, SendBTButton} from '../components';
+import {
+  MotorSlider,
+  ControlStateButton,
+  SendBTButton,
+  LineSensorIndicator,
+  DistanceSensorIndicator,
+} from '../components';
 
 /*
   TRACE:: #A1.2.5 -> Input screen for the mower.
@@ -45,6 +51,10 @@ const ControlScreen = () => {
       {status === 'CONNECTED' ? (
         <ControlView>
           <TitleText>Control Mower</TitleText>
+          <SensorView>
+            <LineSensorIndicator />
+            <DistanceSensorIndicator />
+          </SensorView>
           <SliderView>
             <MotorSlider left={true} />
             <MotorSlider left={false} />
@@ -93,7 +103,12 @@ const TitleText = styled.Text`
   text-align: center;
 `;
 
-const DebugButtonsView = styled.View``;
+const SensorView = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+`;
 
 const SliderView = styled.View`
   display: flex;
