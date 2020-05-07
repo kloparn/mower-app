@@ -83,7 +83,7 @@ const bluetooth = {
                       } else {
                         const data = characteristic.value;
                         //console.log('characteristic', data);
-                        let decodedData = decode(data);
+                        let decodedData = decode(data).split('');
 
                         // Buffer loop
                         let tempBuffer = buffer;
