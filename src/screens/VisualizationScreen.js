@@ -13,7 +13,6 @@ import {
   Button,
   Dimensions
 } from 'react-native';
-
 import {Layout} from '../components';
 
   class VisualizationScreen extends React.Component {
@@ -31,35 +30,49 @@ import {Layout} from '../components';
       canvas.width = Dimensions.get('window').width; //max X
       canvas.height = Dimensions.get('window').width; // max Y
 
-      var pos = this.state.session
+      var robotSize = 15
+      var session = this.state.session
 
-      var maxX = 10, maxY = 10
-      for(var i = 0; i < pos.length; i++) {
-        if(Math.abs(pos[i].position.x) > maxX)
-          maxX = Math.abs(pos[i].position.x)
-        if(Math.abs(pos[i].position.y) > maxY)
-          maxY = Math.abs(pos[i].position.y)
+      var maxX = 1, maxY = 1
+      for(var i = 0; i < session.length; i++) {
+        if(Math.abs(session[i].position.x) > maxX)
+          maxX = Math.abs(session[i].position.x)
+        if(Math.abs(session[i].position.y) > maxY)
+          maxY = Math.abs(session[i].position.y)
       }
 
+      var longSide, shortSide
+      if(maxX > maxY) {
+        longSide = maxX
+        shortSide = maxY
+      } else {
+        longSide = maxY
+        shortSide = maxX
+      }
+
+      var sideRatio = shortSide/longSide
       const pixelMax = canvas.width/2-10
-      const xRatio = pixelMax / maxX, yRatio = pixelMax / maxY
-      const xOrigo = canvas.width/2, yOrigo = canvas.height/2
+
+      const xRatio = (maxX == shortSide) ? pixelMax / maxX * sideRatio : pixelMax / maxX
+      const yRatio = (maxY == shortSide) ? pixelMax / maxY * sideRatio : pixelMax / maxY
+      const xOrigo = canvas.width/2
+      const yOrigo = canvas.height/2
 
       const ctx = canvas.getContext('2d');
       ctx.beginPath();
-      ctx.arc(canvas.width/2, canvas.width/2, 5, 0, Math.PI * 2, false); // origo     
-      
       var x, y
-      for(var i = 0; i < pos.length; i++) {
-        x = (xOrigo + pos[i].position.x*xRatio ) 
-        y = (yOrigo + pos[i].position.y*yRatio*-1 )
+      for(var i = 0; i < session.length; i++) {
+        x = (xOrigo + session[i].position.x*xRatio)
+        y = (yOrigo + session[i].position.y*yRatio*-1)
         ctx.lineTo(x, y);
       }
       ctx.strokeStyle = 'white';
+      ctx.lineWidth = robotSize;
+      ctx.lineJoin = 'round';
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.arc(x, y, 5, 0, Math.PI * 2, false);
+      ctx.arc(x, y, 7, 0, Math.PI * 2, false);
       ctx.strokeStyle = 'green';
       ctx.stroke();
 
@@ -67,7 +80,6 @@ import {Layout} from '../components';
     }
    
     getSession = () => {
- 
       fetch("https://leather-batend.herokuapp.com/api/session", {
         method: "GET",
         headers: {
@@ -90,7 +102,7 @@ import {Layout} from '../components';
           <View>
             {this.populateTest}
             <Canvas ref={this.handleCanvas} />
-            <Button onPress={this.getSession} title="Session"></Button>
+            <Button onPress={this.getSession} title="Get path"></Button>
           </View>
         </Layout>
       );
