@@ -137,8 +137,8 @@ const bluetooth = {
         // Check if 0 or 1
         console.log('type: ', type);
         console.log('args: ', args);
-        state.setLineSensor(args[0]);
-        state.setMotionSensor(args[1]);
+        state.setLineSensor(args[1]);
+        state.setMotionSensor(args[0]);
         break;
       case 'p':
         const position = {x: args[0], y: args[1]};

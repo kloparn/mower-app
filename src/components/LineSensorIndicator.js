@@ -12,20 +12,28 @@ const LineSensorIndicator = () => {
   const picture = <Icon name="grip-lines" size={60} color="#FFFFFF" />;
 
   return lineSensor ? (
-    <TheView>{picture}</TheView>
+    <DangerView>{picture}</DangerView>
   ) : (
-    <TheOtherView>{picture}</TheOtherView>
+    <SafeView>{picture}</SafeView>
   );
 };
 
-const TheView = styled.View`
-  padding: 30px;
+const DangerView = styled.View`
+  width: 120px;
+  height: 120px;
   background: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const TheOtherView = styled.View`
-  padding: 30px;
+const SafeView = styled.View`
+  width: 120px;
+  height: 120px;
   background: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default LineSensorIndicator;

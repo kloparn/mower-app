@@ -8,28 +8,36 @@ import {Button, View, Text} from 'react-native';
 const DistanceSensorIndicator = () => {
   const {motionSensor} = useStoreState((state) => state.bluetooth);
   return motionSensor === null ? (
-    <TheOtherView>
+    <SafeView>
       <Icon name="eye-slash" size={60} color="#FFFFFF" />
-    </TheOtherView>
+    </SafeView>
   ) : motionSensor < 10 ? (
-    <TheView>
+    <DangerView>
       <Text>{motionSensor}</Text>
-    </TheView>
+    </DangerView>
   ) : (
-    <TheOtherView>
+    <SafeView>
       <Text>{motionSensor}</Text>
-    </TheOtherView>
+    </SafeView>
   );
 };
 
-const TheView = styled.View`
-  padding: 30px;
+const DangerView = styled.View`
+  width: 120px;
+  height: 120px;
   background: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const TheOtherView = styled.View`
-  padding: 30px;
+const SafeView = styled.View`
+  width: 120px;
+  height: 120px;
   background: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default DistanceSensorIndicator;
