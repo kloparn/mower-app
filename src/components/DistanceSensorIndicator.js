@@ -1,16 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useStoreState, useStoreActions} from 'easy-peasy';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {eyeSlashIcon} from '../helpers/icons';
 
 import {Button, View, Text} from 'react-native';
 
+/*
+  TRACE:: #A1.3.7 -> Create visualization component for the collision avoidance.
+*/
+
 const DistanceSensorIndicator = () => {
+  /*
+    TRACE:: #A1.3.9 -> Hook up visualization component to sensor data from the mower.
+  */
   const {motionSensor} = useStoreState((state) => state.bluetooth);
+
   return motionSensor === null ? (
-    <SafeView>
-      <Icon name="eye-slash" size={60} color="#FFFFFF" />
-    </SafeView>
+    <SafeView>{eyeSlashIcon}</SafeView>
   ) : motionSensor < 10 ? (
     <DangerView>
       <Text>{motionSensor}</Text>

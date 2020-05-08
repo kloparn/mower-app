@@ -1,20 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useStoreState, useStoreActions} from 'easy-peasy';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import {gripLinesIcon} from '../helpers/icons';
 
 import {Button, View, Text, addons} from 'react-native';
 
+/*
+  TRACE:: #A1.3.7 -> Create visualization component for the collision avoidance.
+*/
+
 const LineSensorIndicator = () => {
+  /*
+    TRACE:: #A1.3.9 -> Hook up visualization component to sensor data from the mower.
+  */
   const {lineSensor} = useStoreState((state) => state.bluetooth);
 
-  // Made the picture a const to be used in both statements, so it does not need to be init in both statements
-  const picture = <Icon name="grip-lines" size={60} color="#FFFFFF" />;
-
   return lineSensor ? (
-    <DangerView>{picture}</DangerView>
+    <DangerView>{gripLinesIcon}</DangerView>
   ) : (
-    <SafeView>{picture}</SafeView>
+    <SafeView>{gripLinesIcon}</SafeView>
   );
 };
 
