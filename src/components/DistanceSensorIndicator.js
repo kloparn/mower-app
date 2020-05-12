@@ -1,35 +1,49 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useStoreState, useStoreActions} from 'easy-peasy';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {eyeSlashIcon} from '../helpers/icons';
 
 import {Button, View, Text} from 'react-native';
 
+/*
+  TRACE:: #A1.3.7 -> Create visualization component for the collision avoidance.
+*/
+
 const DistanceSensorIndicator = () => {
+  /*
+    TRACE:: #A1.3.9 -> Hook up visualization component to sensor data from the mower.
+  */
   const {motionSensor} = useStoreState((state) => state.bluetooth);
+
   return motionSensor === null ? (
-    <TheOtherView>
-      <Icon name="eye-slash" size={60} color="#FFFFFF" />
-    </TheOtherView>
+    <SafeView>{eyeSlashIcon}</SafeView>
   ) : motionSensor < 10 ? (
-    <TheView>
+    <DangerView>
       <Text>{motionSensor}</Text>
-    </TheView>
+    </DangerView>
   ) : (
-    <TheOtherView>
+    <SafeView>
       <Text>{motionSensor}</Text>
-    </TheOtherView>
+    </SafeView>
   );
 };
 
-const TheView = styled.View`
-  padding: 30px;
+const DangerView = styled.View`
+  width: 120px;
+  height: 120px;
   background: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const TheOtherView = styled.View`
-  padding: 30px;
+const SafeView = styled.View`
+  width: 120px;
+  height: 120px;
   background: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default DistanceSensorIndicator;
