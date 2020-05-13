@@ -6,8 +6,6 @@ import axios from 'axios';
 /*
   TRACE:: #A1.1.2 -> State management in application.
   TRACE:: #A1.1.3 -> Low energy bluetooth connection to speak with the robot.
-  TRACE:: #A1.3.8 -> Receive and handle bluetooth response about collision information from mower.
-  TRACE:: #A1.3.9 -> Hook up visualization component to sensor data from the mower.
 */
 
 // URL
@@ -119,10 +117,6 @@ const bluetooth = {
       }
     });
   }),
-
-  /*
-    TRACE:: #A1.3.8 -> Receive and handle bluetooth response about collision information from mower.
-  */
   prepareToReceiveData: thunk((state, decodedData) => {
     // Debug
     state.addToData_debug(decodedData);
@@ -143,12 +137,8 @@ const bluetooth = {
         // Check if 0 or 1
         console.log('type: ', type);
         console.log('args: ', args);
-
-        /*
-          TRACE:: #A1.3.9 -> Hook up visualization component to sensor data from the mower.
-        */
-        state.setLineSensor(args[1]);
-        state.setMotionSensor(args[0]);
+        state.setLineSensor(args[0]);
+        state.setMotionSensor(args[1]);
         break;
       case 'p':
         const position = {x: args[0], y: args[1]};
@@ -156,6 +146,9 @@ const bluetooth = {
         console.log('type: ', type);
         console.log('args: ', args);
         state.sendPositionToBackEnd({flag, position});
+        break;
+      case 'd':
+        state.sendCommandToRobot(':d4;');
         break;
       default:
         console.log("ERROR, GOT A NUMTYPE WE DON'T CONTROL");
@@ -191,6 +184,7 @@ const bluetooth = {
   /*
   TRACE:: #A1.2.6 -> Bluetooth commands for sending the user inputs
   */
+
   sendCommandToRobot: action((state, message) => {
     const manager = state.manager;
     const device = state.device;
