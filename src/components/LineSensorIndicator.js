@@ -17,7 +17,7 @@ const LineSensorIndicator = () => {
 
   console.log('CURRENT LINE SENSOR VALUE FROM COMPONENT: ', lineSensor);
 
-  return !lineSensor ? (
+  return lineSensor ? (
     <DangerView>{gripLinesIcon}</DangerView>
   ) : (
     <SafeView>{gripLinesIcon}</SafeView>
