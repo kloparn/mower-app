@@ -137,7 +137,7 @@ const bluetooth = {
         // Check if 0 or 1
         console.log('type: ', type);
         console.log('args: ', args);
-        state.setLineSensor(args[1]);
+        state.setLineSensor(parseInt(args[1]));
         state.setMotionSensor(args[0]);
         break;
       case 'p':
@@ -172,10 +172,8 @@ const bluetooth = {
     else state.rightMotor = value;
   }),
   setLineSensor: action((state, newSensorVal) => {
-    console.log('in setLineSensor: ', newSensorVal);
     if (newSensorVal != state.lineSensor) {
       state.lineSensor = newSensorVal;
-      console.log('Changing line sensor value!!!');
     }
   }),
   setMotionSensor: action((state, newSensorVal) => {
