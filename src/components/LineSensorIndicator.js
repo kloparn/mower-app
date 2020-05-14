@@ -15,7 +15,7 @@ const LineSensorIndicator = () => {
   */
   const {lineSensor} = useStoreState((state) => state.bluetooth);
 
-  return lineSensor ? (
+  return !lineSensor ? (
     <DangerView>{gripLinesIcon}</DangerView>
   ) : (
     <SafeView>{gripLinesIcon}</SafeView>
