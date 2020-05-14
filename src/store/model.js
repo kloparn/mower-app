@@ -172,7 +172,11 @@ const bluetooth = {
     else state.rightMotor = value;
   }),
   setLineSensor: action((state, newSensorVal) => {
-    if (newSensorVal != state.lineSensor) state.lineSensor = newSensorVal;
+    console.log('in setLineSensor: ', newSensorVal);
+    if (newSensorVal != state.lineSensor) {
+      state.lineSensor = newSensorVal;
+      console.log('Changing line sensor value!!!');
+    }
   }),
   setMotionSensor: action((state, newSensorVal) => {
     if (newSensorVal != state.motionSensor) state.motionSensor = newSensorVal;

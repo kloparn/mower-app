@@ -15,6 +15,8 @@ const LineSensorIndicator = () => {
   */
   const {lineSensor} = useStoreState((state) => state.bluetooth);
 
+  console.log('CURRENT LINE SENSOR VALUE FROM COMPONENT: ', lineSensor);
+
   return !lineSensor ? (
     <DangerView>{gripLinesIcon}</DangerView>
   ) : (
