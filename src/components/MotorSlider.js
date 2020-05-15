@@ -14,21 +14,22 @@ const MotorSlider = ({left}) => {
     <VerticalSlider
       value={currentMotorValue}
       disabled={false}
-      min={0}
-      max={400}
+      min={-100}
+      max={100}
       onChange={(value) => {
         //TODO: Send command to robot, with new value.
         if (value !== currentMotorValue) {
           // Set the right motor value
           setMotor({left, value});
           // send correct thing
-          if (left) sendCommand({d: 2, lm: value, rm: rightMotor});
-          else sendCommand({d: 2, lm: leftMotor, rm: value});
+          const convertedValue = (100 + value) * 2;
+          if (left) sendCommand({d: 2, lm: convertedValue, rm: rightMotor});
+          else sendCommand({d: 2, lm: leftMotor, rm: convertedValue});
         }
       }}
       width={50}
       height={300}
-      step={10}
+      step={5}
       borderRadius={5}
       minimumTrackTintColor={'#17b978'}
       maximumTrackTintColor={'#086972'}

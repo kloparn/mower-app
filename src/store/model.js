@@ -31,9 +31,10 @@ const STATUS_VERIFYING = 'VERIFYING';
 const STATUS_CONNECTED = 'CONNECTED';
 const STATUS_ERROR = 'ERROR';
 
-const MOTOR_START_VALUE = 200;
+const MOTOR_START_VALUE = 5;
 
 const bluetooth = {
+  driveState: 0,
   manager: null,
   device: null,
   status: STATUS_INIT,
@@ -82,7 +83,6 @@ const bluetooth = {
                         state.setStatus(STATUS_ERROR);
                       } else {
                         const data = characteristic.value;
-                        //console.log('characteristic', data);
                         let decodedData = decode(data).split('');
 
                         // Buffer loop
@@ -135,16 +135,12 @@ const bluetooth = {
         // update sensor value state
         // Check if the value is above a certain number,
         // Check if 0 or 1
-        console.log('type: ', type);
-        console.log('args: ', args);
         state.setLineSensor(parseInt(args[1]));
         state.setMotionSensor(args[0]);
         break;
       case 'p':
         const position = {x: args[0], y: args[1]};
         const flag = args[2];
-        console.log('type: ', type);
-        console.log('args: ', args);
         state.sendPositionToBackEnd({flag, position});
         break;
       case 'd':
@@ -163,6 +159,9 @@ const bluetooth = {
   }),
   setDevice: action((state, device) => {
     state.device = device;
+  }),
+  setDriveState: action((state, newState) => {
+    state.driveState = newState;
   }),
   addToData_debug: action((state, data) => {
     state.data_debug.push(data);
@@ -191,9 +190,6 @@ const bluetooth = {
     const manager = state.manager;
     const device = state.device;
     const base64EncodedMsg = encode(message);
-    // Temp for debugging while sending information to the robot
-    console.log('MSG: ', message);
-    console.log('ENCODED MSG: ', base64EncodedMsg);
     manager.writeCharacteristicWithoutResponseForDevice(
       device.id,
       ROBOT_SERVICE_UUID,
@@ -202,16 +198,11 @@ const bluetooth = {
     );
   }),
   sendCommand: thunk((state, {d, lm, rm}) => {
-    //console.log('LEFT MOTOR: ', lm);
-    //console.log('RIGHT MOTOR: ', rm);
     if (lm === undefined || rm === undefined)
       state.sendCommandToRobot(`:d${d};`);
     else state.sendCommandToRobot(`:l${lm},r${rm};`);
   }),
   sendPositionToBackEnd: thunk(async (state, {flag, position}) => {
-    console.log('flag: ', flag);
-    console.log('Date: ', Date.now());
-    console.log('position: ', position);
     const data = {
       avoidance: {
         position,
@@ -219,9 +210,7 @@ const bluetooth = {
         date: Date(),
       },
     };
-
-    const res = await axios.post(API_POST_URL, data, AXIOS_CONFIG);
-    console.log(res.data);
+    await axios.post(API_POST_URL, data, AXIOS_CONFIG);
   }),
 };
 

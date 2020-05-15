@@ -7,7 +7,7 @@ import {StoreProvider, createStore} from 'easy-peasy';
 import {ThemeProvider} from 'styled-components';
 
 import model from './store/model';
-import {defaultTheme} from './styles/themes';
+import {defaultTheme, experimentTheme} from './styles/themes';
 import {MainScreen, ControlScreen, VisualizationScreen} from './screens';
 
 const store = createStore(model);
@@ -39,7 +39,7 @@ const App = () => {
               },
             })}>
             <Tab.Screen name="Control" component={ControlScreen} />
-            <Tab.Screen name="Home" component={MainScreen} />
+            {/*<Tab.Screen name="Home" component={MainScreen} />*/}
             <Tab.Screen name="Visualization" component={VisualizationScreen} />
           </Tab.Navigator>
         </NavigationContainer>

@@ -30,7 +30,7 @@ import {Layout} from '../components';
 
 const ControlScreen = () => {
   const {initBluetooth} = useStoreActions((state) => state.bluetooth);
-  const status = useStoreState((state) => state.bluetooth.status);
+  const {status, driveState} = useStoreState((state) => state.bluetooth);
 
   const connectToRobot = () => {
     PermissionsAndroid.check(
@@ -45,21 +45,35 @@ const ControlScreen = () => {
   };
   return (
     <Layout>
-      {status === 'CONNECTED' ? (
+      {status === 'ERROR' ? (
         <ControlView>
           <TitleText>Control Mower</TitleText>
           <SensorView>
             <LineSensorIndicator />
             <DistanceSensorIndicator />
           </SensorView>
-          <SliderView>
-            <MotorSlider left={true} />
-            <MotorSlider left={false} />
-          </SliderView>
+          {driveState === 2 && (
+            <SliderView>
+              <MotorSlider left={true} />
+              <MotorSlider left={false} />
+            </SliderView>
+          )}
           <ButtonView>
-            <ControlStateButton text="Stop" id={0} />
-            <ControlStateButton text="Autonomous" id={1} />
-            <ControlStateButton text="Manual" id={2} />
+            <ControlStateButton
+              text="Stop"
+              id={0}
+              isSelected={driveState == 0}
+            />
+            <ControlStateButton
+              text="Autonomous"
+              id={1}
+              isSelected={driveState == 1}
+            />
+            <ControlStateButton
+              text="Manual"
+              id={2}
+              isSelected={driveState == 2}
+            />
           </ButtonView>
         </ControlView>
       ) : (

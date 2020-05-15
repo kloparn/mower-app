@@ -7,3 +7,13 @@ export const defaultTheme = {
     text: '#ffffff',
   },
 };
+
+export const experimentTheme = {
+  colors: {
+    primary: '#40514e',
+    secondary: '#2f89fc',
+    third: '#30e3ca',
+    forth: '#f5f5f5',
+    text: '#ffffff',
+  },
+};

@@ -14,7 +14,6 @@ const DistanceSensorIndicator = () => {
     TRACE:: #A1.3.9 -> Hook up visualization component to sensor data from the mower.
   */
   const {motionSensor} = useStoreState((state) => state.bluetooth);
-
   return motionSensor === null ? (
     <SafeView>{eyeSlashIcon}</SafeView>
   ) : motionSensor < 30 ? (
@@ -33,7 +32,7 @@ const DistanceSensorIndicator = () => {
 };
 
 const CustomText = styled.Text`
-  font-size: 50px;
+  font-size: 27px;
 `;
 
 const DangerView = styled.View`
