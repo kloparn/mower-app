@@ -10,10 +10,10 @@ export const defaultTheme = {
 
 export const experimentTheme = {
   colors: {
-    primary: '#40514e',
-    secondary: '#2f89fc',
-    third: '#30e3ca',
-    forth: '#f5f5f5',
+    primary: '#212121',
+    secondary: '#3a4042',
+    third: '#50717b',
+    forth: '#8ecccc',
     text: '#ffffff',
   },
 };

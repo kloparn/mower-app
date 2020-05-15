@@ -31,11 +31,11 @@ const MotorSlider = ({left}) => {
       height={300}
       step={5}
       borderRadius={5}
-      minimumTrackTintColor={'#17b978'}
-      maximumTrackTintColor={'#086972'}
+      minimumTrackTintColor={'#8ecccc'}
+      maximumTrackTintColor={'#50717b'}
       showBallIndicator
       ballIndicatorPosition={left ? -53 : 55}
-      ballIndicatorColor={'#17b978'}
+      ballIndicatorColor={'#8ecccc'}
       ballIndicatorTextColor={'white'}
     />
   );

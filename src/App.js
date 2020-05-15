@@ -21,9 +21,15 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   return (
     <StoreProvider store={store}>
-      <ThemeProvider theme={defaultTheme}>
+      <ThemeProvider theme={experimentTheme}>
         <NavigationContainer>
           <Tab.Navigator
+            tabBarOptions={{
+              activeBackgroundColor: '#212121',
+              inactiveBackgroundColor: '#212121',
+              activeTintColor: '#8ecccc',
+              inactiveTintColor: '#50717b',
+            }}
             screenOptions={({route}) => ({
               tabBarIcon: ({focused, color, size}) => {
                 switch (route.name) {

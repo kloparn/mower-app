@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useStoreState, useStoreActions} from 'easy-peasy';
-import {gripLinesIcon} from '../helpers/icons';
+import {dangerGripLinesIcon, safeGripLinesIcon} from '../helpers/icons';
 
 import {Button, View, Text, addons} from 'react-native';
 
@@ -18,25 +18,16 @@ const LineSensorIndicator = () => {
   console.log('CURRENT LINE SENSOR VALUE FROM COMPONENT: ', lineSensor);
 
   return lineSensor ? (
-    <DangerView>{gripLinesIcon}</DangerView>
+    <CustomView>{dangerGripLinesIcon}</CustomView>
   ) : (
-    <SafeView>{gripLinesIcon}</SafeView>
+    <CustomView>{safeGripLinesIcon}</CustomView>
   );
 };
 
-const DangerView = styled.View`
+const CustomView = styled.View`
   width: 120px;
   height: 120px;
-  background: red;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SafeView = styled.View`
-  width: 120px;
-  height: 120px;
-  background: green;
+  background-color: ${(props) => props.theme.colors.secondary};
   display: flex;
   align-items: center;
   justify-content: center;

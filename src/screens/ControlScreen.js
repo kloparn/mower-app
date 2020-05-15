@@ -2,6 +2,7 @@ import React, {Fragment, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useStoreState, useStoreActions} from 'easy-peasy';
 import {requestLocationPermission} from '../helpers/permissions';
+import {useBluetoothStatus} from 'react-native-bluetooth-status';
 import {
   MotorSlider,
   ControlStateButton,
@@ -31,13 +32,19 @@ import {Layout} from '../components';
 const ControlScreen = () => {
   const {initBluetooth} = useStoreActions((state) => state.bluetooth);
   const {status, driveState} = useStoreState((state) => state.bluetooth);
+  const [btStatus, isPending, setBluetooth] = useBluetoothStatus();
 
   const connectToRobot = () => {
     PermissionsAndroid.check(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     ).then((hasPermission) => {
       if (hasPermission) {
-        initBluetooth();
+        // Make sure bluetooth is on.
+        if (!isPending && btStatus) {
+          initBluetooth();
+        } else {
+          setBluetooth();
+        }
       } else {
         requestLocationPermission();
       }

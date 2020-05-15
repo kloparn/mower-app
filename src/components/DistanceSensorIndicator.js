@@ -15,48 +15,39 @@ const DistanceSensorIndicator = () => {
   */
   const {motionSensor} = useStoreState((state) => state.bluetooth);
   return motionSensor === null ? (
-    <SafeView>{eyeSlashIcon}</SafeView>
+    <CustomView>{eyeSlashIcon}</CustomView>
   ) : motionSensor < 30 ? (
-    <DangerView>
-      <CustomText>{motionSensor} cm</CustomText>
-    </DangerView>
+    <CustomView>
+      <DangerText>{motionSensor} cm</DangerText>
+    </CustomView>
   ) : motionSensor >= 30 && motionSensor < 50 ? (
-    <WarningView>
-      <CustomText>{motionSensor} cm</CustomText>
-    </WarningView>
+    <CustomView>
+      <WarningText>{motionSensor} cm</WarningText>
+    </CustomView>
   ) : (
-    <SafeView>
-      <CustomText>{motionSensor} cm</CustomText>
-    </SafeView>
+    <CustomView>
+      <SafeText>{motionSensor} cm</SafeText>
+    </CustomView>
   );
 };
 
-const CustomText = styled.Text`
+const DangerText = styled.Text`
   font-size: 27px;
+  color: red;
+`;
+const WarningText = styled.Text`
+  font-size: 27px;
+  color: orange;
+`;
+const SafeText = styled.Text`
+  font-size: 27px;
+  color: green;
 `;
 
-const DangerView = styled.View`
+const CustomView = styled.View`
   width: 120px;
   height: 120px;
-  background: red;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const WarningView = styled.View`
-  width: 120px;
-  height: 120px;
-  background: yellow;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SafeView = styled.View`
-  width: 120px;
-  height: 120px;
-  background: green;
+  background-color: ${(props) => props.theme.colors.secondary};
   display: flex;
   align-items: center;
   justify-content: center;
