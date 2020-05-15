@@ -45,7 +45,7 @@ const ControlScreen = () => {
   };
   return (
     <Layout>
-      {status === 'CONNECTED' ? (
+      {status === 'ERROR' ? (
         <ControlView>
           <TitleText>Control Mower</TitleText>
           <SensorView>
