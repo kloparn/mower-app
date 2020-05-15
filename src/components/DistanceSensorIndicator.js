@@ -19,21 +19,24 @@ const DistanceSensorIndicator = () => {
     <SafeView>{eyeSlashIcon}</SafeView>
   ) : motionSensor < 30 ? (
     <DangerView>
-      <Text>{motionSensor}</Text>
+      <CustomText>{motionSensor}</CustomText>
     </DangerView>
   ) : motionSensor >= 30 && motionSensor < 50 ? (
     <WarningView>
-      <Text>{motionSensor}</Text>
+      <CustomText>{motionSensor}</CustomText>
     </WarningView>
   ) : (
     <SafeView>
-      <Text>{motionSensor}</Text>
+      <CustomText>{motionSensor}</CustomText>
     </SafeView>
   );
 };
 
-const DangerView = styled.View`
+const CustomText = styled.Text`
   font-size: 20px;
+`;
+
+const DangerView = styled.View`
   width: 120px;
   height: 120px;
   background: red;
@@ -43,7 +46,6 @@ const DangerView = styled.View`
 `;
 
 const WarningView = styled.View`
-  font-size: 20px;
   width: 120px;
   height: 120px;
   background: yellow;
@@ -53,7 +55,6 @@ const WarningView = styled.View`
 `;
 
 const SafeView = styled.View`
-  font-size: 20px;
   width: 120px;
   height: 120px;
   background: green;
