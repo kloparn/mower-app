@@ -33,7 +33,7 @@ const DistanceSensorIndicator = () => {
 };
 
 const DangerView = styled.View`
-  font: 20px;
+  font-size: 20px;
   width: 120px;
   height: 120px;
   background: red;
@@ -43,7 +43,7 @@ const DangerView = styled.View`
 `;
 
 const WarningView = styled.View`
-  font: 20px;
+  font-size: 20px;
   width: 120px;
   height: 120px;
   background: yellow;
@@ -53,7 +53,7 @@ const WarningView = styled.View`
 `;
 
 const SafeView = styled.View`
-  font: 20px;
+  font-size: 20px;
   width: 120px;
   height: 120px;
   background: green;
