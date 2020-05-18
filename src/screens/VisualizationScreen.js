@@ -38,7 +38,7 @@ import {Layout} from '../components';
       const session = this.state.session
       const origo = screenDimension/2
 
-      var robotSize = 1
+      var robotSize = 5
       var maxCoordinate = 75
       var pixelRatio
       var x, y
