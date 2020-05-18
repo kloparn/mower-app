@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import VerticalSlider from 'rn-vertical-slider';
 import {useStoreState, useStoreActions} from 'easy-peasy';
+import {Value} from 'react-native-reanimated';
 
 /*
   TRACE:: #A1.2.5 -> Input screen for the mower.
@@ -22,12 +23,8 @@ const MotorSlider = ({left}) => {
           // Set the right motor value
           setMotor({left, value});
           // send correct thing
-          const convertedValue = (100 + value) * 2;
-          console.log('Speed sent to mower: ', convertedValue);
-          if (left)
-            sendCommand({d: 2, lm: convertedValue, rm: (100 + rightMotor) * 2});
-          else
-            sendCommand({d: 2, lm: (100 + leftMotor) * 2, rm: convertedValue});
+          if (left) sendCommand({d: 2, lm: value, rm: rightMotor});
+          else sendCommand({d: 2, lm: leftMotor, rm: value});
         }
       }}
       width={50}

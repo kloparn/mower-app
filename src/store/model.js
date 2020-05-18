@@ -199,8 +199,11 @@ const bluetooth = {
   }),
   sendCommand: thunk((state, {d, lm, rm}) => {
     if (lm === undefined || rm === undefined)
-      state.sendCommandToRobot(`:d${d};`);
-    else state.sendCommandToRobot(`:l${lm},r${rm};`);
+      return state.sendCommandToRobot(`:d${d};`);
+    const clm = (100 + lm) * 2;
+    const crm = (100 + lm) * 2;
+    console.log(`MOTOR VALUES SENT TO ROBOT, LEFT: ${clm}, RIGHT: ${crm} `);
+    state.sendCommandToRobot(`:l${clm},r${crm};`);
   }),
   sendPositionToBackEnd: thunk(async (state, {flag, position}) => {
     const data = {
