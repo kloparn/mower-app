@@ -22,7 +22,7 @@ const MotorSlider = ({left}) => {
           // Set the right motor value
           setMotor({left, value});
           // send correct thing
-          const convertedValueRight = (100 + value) * 2;
+          const convertedValue = (100 + value) * 2;
           console.log('Speed sent to mower: ', convertedValue);
           if (left)
             sendCommand({d: 2, lm: convertedValue, rm: (100 + rightMotor) * 2});
