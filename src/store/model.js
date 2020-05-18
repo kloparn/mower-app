@@ -129,6 +129,8 @@ const bluetooth = {
     decodedData = decodedData.substring(1, decodedData.length);
     const args = decodedData.split(',');
 
+    console.log('COMMAND TYPE: ', type, ' ARGS: ', args);
+
     switch (type) {
       case 's':
         // Informing the user that the robot avoided something
