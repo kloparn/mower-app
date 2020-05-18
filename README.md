@@ -2,6 +2,10 @@
 
 Intelligent mobile systems application
 
+# For examinators
+
+The relevant code is located in the `/src` folder, the rest can simply be ignored
+
 # IMPORTANT
 
 If the metro server does not start, do this: \
