@@ -201,7 +201,7 @@ const bluetooth = {
     if (lm === undefined || rm === undefined)
       return state.sendCommandToRobot(`:d${d};`);
     const clm = (100 + lm) * 2;
-    const crm = (100 + lm) * 2;
+    const crm = (100 + rm) * 2;
     console.log(`MOTOR VALUES SENT TO ROBOT, LEFT: ${clm}, RIGHT: ${crm} `);
     state.sendCommandToRobot(`:l${clm},r${crm};`);
   }),
