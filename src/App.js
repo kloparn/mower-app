@@ -45,7 +45,7 @@ const App = () => {
               },
             })}>
             <Tab.Screen name="Control" component={ControlScreen} />
-            <Tab.Screen name="Home" component={MainScreen} />
+            {/*<Tab.Screen name="Home" component={MainScreen} />*/}
             <Tab.Screen name="Visualization" component={VisualizationScreen} />
           </Tab.Navigator>
         </NavigationContainer>
