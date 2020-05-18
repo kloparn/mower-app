@@ -27,7 +27,7 @@ const ControlStateButton = ({text, id, isSelected}) => {
     <SelectedControlButton
       onPress={() => {
         sendCommand({d: id});
-        sendCommand({d: id, lm: 5, rm: 5});
+        if (id === 2) sendCommand({d: id, lm: 5, rm: 5});
         setDriveState(id);
         setMotor({left: true, value: 5});
         setMotor({left: false, value: 5});
@@ -38,7 +38,7 @@ const ControlStateButton = ({text, id, isSelected}) => {
     <ControlButton
       onPress={() => {
         sendCommand({d: id});
-        sendCommand({d: id, lm: 5, rm: 5});
+        if (id === 2) sendCommand({d: id, lm: 5, rm: 5});
         setDriveState(id);
         setMotor({left: true, value: 5});
         setMotor({left: false, value: 5});
